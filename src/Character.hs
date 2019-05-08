@@ -32,7 +32,9 @@ subtractDamageHealth (Damage d) (Health h)
 
 heal :: Health -> Character -> Character
 heal _  c@Character{isAlive=False}  = c
-heal h1 c@Character{health=h}       = c{health=newHealth}
+heal h1 c@Character{health=h}
+  | newHealth > 1000 = c{health=1000}
+  | otherwise = c{health=newHealth}
   where newHealth = h + h1
 
 
