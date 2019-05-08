@@ -1,16 +1,19 @@
 module CharacterSpec where
 
 import Test.Hspec
-import qualified Character
-import Character (Health(..), Level(..))
+import Character
+import Character (Health(..), Level(..), Damage(..))
 
 spec :: Spec
 spec = do
   describe "Character" $ do
     describe "create" $ do
       it "creates a character with health at 1000" $ do
-        Character.health Character.create `shouldBe` Health 1000
+        health create `shouldBe` Health 1000
       it "creates a character with a level 1" $ do
-        Character.level Character.create `shouldBe` Level 1
+        level create `shouldBe` Level 1
       it "creates a character alive" $ do
-        Character.isAlive Character.create `shouldBe` True
+        isAlive create `shouldBe` True
+    describe "damage" $ do
+      it "is subtracted from Health" $ do
+        health (damage (Damage 10) create) `shouldBe` Health 990
