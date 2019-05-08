@@ -4,6 +4,7 @@ module Character ( create
                  , level
                  , isAlive
                  , damage
+                 , heal
                  , Health(..)
                  , Level(..)
                  , Damage(..)
@@ -13,7 +14,7 @@ data Character = Character { health :: Health, level :: Level, isAlive :: Bool }
 
 newtype Health = Health Int deriving (Show, Eq, Ord, Num)
 newtype Level = Level Int deriving (Show, Eq)
-newtype Damage = Damage Int deriving (Show, Eq)
+newtype Damage = Damage Int deriving (Show, Eq, Num)
 
 create :: Character
 create = Character { health= Health 1000, level=Level 1, isAlive=True }
@@ -28,4 +29,10 @@ subtractDamageHealth (Damage d) (Health h)
   | newHealth < 0   = Health 0
   | otherwise = Health newHealth
   where newHealth = h-d
+
+heal :: Health -> Character -> Character
+heal _  c@Character{isAlive=False}  = c
+heal h1 c@Character{health=h}       = c{health=newHealth}
+  where newHealth = h + h1
+
 
