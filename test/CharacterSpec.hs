@@ -29,4 +29,7 @@ spec = do
       it "dead character cannot be healed" $ do
         health (heal (Health 5) deadCharacter) `shouldBe` Health 0
         isAlive (heal (Health 5) deadCharacter) `shouldBe` False
+      it "is add to Health" $ do
+        let character = (damage (Damage 10) create)
+        health (heal (Health 20) character) `shouldBe` Health 1000
 
