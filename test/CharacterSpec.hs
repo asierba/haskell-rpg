@@ -19,3 +19,5 @@ spec = do
         health (damage (Damage 10) create) `shouldBe` Health 990
       it "character dies when Health is 0" $ do
         isAlive (damage (Damage 1000) create) `shouldBe` False
+      it "character dies when Health is 0" $ do
+        health (damage (Damage 1001) create) `shouldBe` Health 0
