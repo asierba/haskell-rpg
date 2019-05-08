@@ -1,7 +1,16 @@
-module Character ( create, health, level, isAlive ) where
+module Character ( create
+                 , health
+                 , level
+                 , isAlive
+                 , Health(..)
+                 , Level(..)
+                 ) where
 
-data Character = Character { health :: Int, level :: Int, isAlive :: Bool }
+data Character = Character { health :: Health, level :: Level, isAlive :: Bool }
+
+newtype Health = Health Int deriving (Show, Eq)
+newtype Level = Level Int deriving (Show, Eq)
 
 create :: Character
-create = Character { health=1000, level=1, isAlive=True }
+create = Character { health= Health 1000, level=Level 1, isAlive=True }
 
