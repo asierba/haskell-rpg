@@ -22,6 +22,11 @@ spec = do
       it "creates a character alive" $ do
         isAlive character1 `shouldBe` True
 
+    describe "levelUp" $ do
+      it "increases the character's level by 1" $ do
+        level (levelUp character1) `shouldBe` Level 2
+        level (levelUp $ levelUp character1) `shouldBe` Level 3
+
     describe "damage" $ do
       it "is subtracted from Health" $ do
         health (damage character2 (Damage 10) character1) `shouldBe` Health 990
@@ -34,6 +39,9 @@ spec = do
       it "cannot damage a player with the same name" $ do
         let otherPlayer1 = damage character2 (Damage 5) (create $ Name "Player 1")
         damage otherPlayer1 (Damage 10) character1 `shouldBe` character1
+      it "increases the damage by 50% if the attacker is 5 or more levels higher" $ do
+        let strongCharacter = applyN 5 levelUp (create $ Name "Strong")
+        health (damage strongCharacter (Damage 10) character1) `shouldBe` Health 985
 
     describe "heal" $ do
       let damagedCharacter = damage character2 (Damage 10) (create $ Name "Damaged")
@@ -48,3 +56,6 @@ spec = do
         health (heal character1 (Health 20) damagedCharacter) `shouldBe` Health 990
       it "can healh characters with the same name" $ do
         health (heal (create $ Name "Damaged") (Health 20) damagedCharacter) `shouldBe` Health 1000
+
+applyN :: Int -> (a -> a) -> a -> a
+applyN n f = foldr (.) id (replicate n f)
