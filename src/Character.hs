@@ -31,15 +31,22 @@ newtype Level = Level Int deriving (Show, Eq)
 newtype Damage = Damage Int deriving (Show, Eq, Num)
 
 create :: Name -> Character
-create n = Character { name = n, health = Health 1000, level=Level 1, isAlive=True }
+create n = Character { name = n
+                     , health = Health 1000
+                     , level=Level 1
+                     , isAlive=True
+                     }
 
 damage :: Character -> Damage -> Character -> Character
-damage from d c@Character{health=h} =
-  if name from /= name c
-    then c{health=newHealth, isAlive=newAlive}
-    else c
+damage from d to@Character{health=h} =
+  if isSame from to
+    then to
+    else to{health=newHealth, isAlive=newAlive}
   where newHealth = subtractDamageHealth d h
         newAlive = newHealth > 0
+
+isSame :: Character -> Character -> Bool
+isSame c1 c2 = name c1 == name c2
 
 subtractDamageHealth :: Damage -> Health -> Health
 subtractDamageHealth (Damage d) (Health h)
