@@ -56,11 +56,14 @@ subtractDamageHealth (Damage d) (Health h)
 
 heal :: Character -> Health -> Character -> Character
 heal _ _  to@Character{isAlive=False}  = to
-heal from h1 to@Character{health=h}
-  | charactersAreSame && newHealth > 1000 = to{health=1000}
-  | charactersAreSame                     = to{health=newHealth}
-  | otherwise                             = to
+heal from amount to =
+  if charactersAreSame
+    then updateHealth (improveHealth amount) to
+    else to
   where charactersAreSame = isSame from to
-        newHealth = h + h1
 
+updateHealth :: (Health -> Health) -> Character -> Character
+updateHealth fn c@Character{health=h} = c { health = fn h }
 
+improveHealth :: Health -> Health -> Health
+improveHealth amount oldHealth = min 1000 (amount + oldHealth)
